@@ -57,7 +57,7 @@ end
 
 function make_euler_object(labels, counts, specs::Vector{EulerSpec}; sizesum = 1)
 	target = DisjointSet(counts, labels)
-	count_totals = vec(sum(counts,1))
+	count_totals = vec(sum(counts,dims=1))
 
 	@assert length(labels) == length(count_totals)
 
@@ -73,7 +73,7 @@ function make_euler_object(labels, counts, specs::Vector{EulerSpec}; sizesum = 1
 
 	# this forces the centers to not overlap with the boundary
 	# and inserts any non-NaN clamps into the vector
-	clamp_vec = [[sp.clamp for sp in specs]...]
+    clamp_vec = cat([sp.clamp for sp in specs]...,dims=1)
 	#@show clamp_vec
 	#@show shape_sizes
 	lb = ifelse(isnan(clamp_vec), bounding_boxes, clamp_vec)
