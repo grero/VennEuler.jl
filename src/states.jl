@@ -93,7 +93,7 @@ end
 make_euler_object(labels, counts, spec::EulerSpec; q...) = 
 	make_euler_object(labels, counts, EulerSpec[deepcopy(spec)::EulerSpec for x in 1:length(labels)]; q...)
 
-function random_state(eo::EulerObject)
-	rand(eo.nparams) .* (eo.ub .- eo.lb) .+ eo.lb
+function random_state(eo::EulerObject, RNG=MersenneTwister((rand(UInt32))))
+	rand(RNG, eo.nparams) .* (eo.ub .- eo.lb) .+ eo.lb
 end
 
