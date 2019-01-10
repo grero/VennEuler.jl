@@ -161,7 +161,7 @@ function make_bitmap_circle(x, y, r, px)
 			xrange_bm = round(Integer, max(1,(x - alpha) * px + 1)) : round(Integer, min(px,(x + alpha) * px + 1))
 			#@show xrange_bm
 			if (length(xrange_bm) > 0)
-				@inbounds bm[yoffset_bm, xrange_bm] = true
+				@inbounds bm[yoffset_bm, xrange_bm] .= true
 			end
 		end
 	end
