@@ -1,0 +1,12 @@
+name = "VennEuler"
+uuid = "1cfcecda-3531-5955-88e9-4d9a0801da84"
+author = ["Harlan Harris <harlan@harris.name>"]
+version = "0.0.1"
+
+[deps]
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+Cairo = "159f3aea-2a34-519c-b102-8c37f9878175"
+Iterators = "a4bce56a-f44e-563f-a45f-5312daf41243"
+NLopt = "76087f3c-5699-56af-9a33-bf431cd00edd"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
