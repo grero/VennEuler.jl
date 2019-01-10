@@ -1,10 +1,25 @@
-using VennEuler, Base.Test
+using VennEuler
+using Test
+using CSV
+using Random
 
+@testset "DC2 data" begin
+    RNG = MersenneTwister(1234)
+    data = CSV.read(joinpath(dirname(pathof(VennEuler)), "../test/DC2.csv"))
+    labels = string.(collect(names(data)))
+    cdata = Bool.(Matrix{Int64}(data))
+    eo = make_euler_object(labels, cdata, EulerSpec())
+    (minf,minx,ret) = optimize(eo, random_state(eo,RNG), ftol=-1, xtol=0.0025, maxtime=120, pop=1000)
+    @test minf ≈ 0.0
+    @test ret == :FORCED_STOP
+    @test minx ≈ [0.557413, 0.668614, 0.520967, 0.487366, 0.682378, 0.719669, 0.338118, 0.391118, 0.324278, 0.555301, 0.578743, 0.241321] atol=0.001
+    render(joinpath(@__DIR__, "DC2.svg"), eo, minx)
+end
 # just use @test macro
 # run with:
 # reload("src/VennEuler.jl"); include("test/test.jl")
 
-srand(2)
+Random.seed!(2)
 
 # set up an initial test of 3 circles with random set membership
 
@@ -28,8 +43,8 @@ VennEuler.update_statepos!(specs1)
 @test isequal(specs1[1].statepos, [1, 2])
 @test isequal(specs1[2].statepos, [3, 4])
 
-ss, bb = VennEuler.compute_shape_sizes(specs1, vec(sum(randdata,1)), .5)
-@test_approx_eq_eps(ss, [0.265962,0.171677,0.242789], .001)
+ss, bb = VennEuler.compute_shape_sizes(specs1, vec(sum(randdata,dims=1)), .5)
+@test ss ≈ [0.265962,0.171677,0.242789] atol=.001
 
 # make sure DisjointSets can be constructed
 ds1 = VennEuler.DisjointSet(randdata, setlabels)
@@ -37,7 +52,7 @@ ds1 = VennEuler.DisjointSet(randdata, setlabels)
 
 # make an Euler object
 eo = make_euler_object(setlabels, randdata, spec, sizesum=.5) # test shortcut
-@test_approx_eq_eps(eo.lb, [0.265962, 0.265962, 0.171677, 0.171677, 0.242789, 0.242789], .001)
+@test eo.lb ≈ [0.265962, 0.265962, 0.171677, 0.171677, 0.242789, 0.242789], atol=.001
 es = random_state(eo)
 @test all(eo.lb .<= es .<= eo.ub)
 
