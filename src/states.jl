@@ -76,8 +76,8 @@ function make_euler_object(labels, counts, specs::Vector{EulerSpec}; sizesum = 1
     clamp_vec = cat([sp.clamp for sp in specs]...,dims=1)
 	#@show clamp_vec
 	#@show shape_sizes
-	lb = ifelse(isnan(clamp_vec), bounding_boxes, clamp_vec)
-	ub = ifelse(isnan(clamp_vec), 1 .- bounding_boxes, clamp_vec)
+	lb = ifelse.(isnan.(clamp_vec), bounding_boxes, clamp_vec)
+	ub = ifelse.(isnan.(clamp_vec), 1 .- bounding_boxes, clamp_vec)
 	@assert all(lb .<= ub)
 
 	# return: state vector, state object (with bounds, closure, etc)
