@@ -13,7 +13,7 @@ mutable struct DisjointSet
 		nrow = size(dat,1); ncol = size(dat,2)
 
 		pssize = 2^ncol
-		cts = zeros(Int64, pssize)
+		cts = fill(0, pssize)
 
 		for row in 1:nrow
 			# which cell to increment? start with 0 and add powers of 2 from right to left
